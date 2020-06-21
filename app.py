@@ -77,4 +77,5 @@ def api_occupation():
 
     return 'No Hero ID Parameter Found'
 
-app.run()
+if __name__ == '__main__':
+    app.run()
