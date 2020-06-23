@@ -1,11 +1,11 @@
 
 # Super Hero Dashboard
 
-A simple bootstrap web application to visualize DC & Marvel comic super heroes. Please visit ![Super Hero Dashboard](https://super-hero-test.herokuapp.com) hosted by ![Heroku](#https://heroku.com).
+A simple bootstrap web application to super heroes spanning every imagination from Star Wards to Marvel comic series. Please visit [Super Hero Dashboard](https://super-hero-test.herokuapp.com) hosted by [Heroku](https://heroku.com).
 
-Credit to ![TwentyEight10](#http://jommaz.github.io) for allowing access to their free tier ![Super Hero API](#https://superheroapi.com) - for which this project wouldn't be possible without.
+Credit to [TwentyEight10](http://jommaz.github.io) for allowing access to their free tier [Super Hero API](https://superheroapi.com) - for which this project wouldn't be possible without.
 
-This dashboard allows for persistence layer flexibility, made completely possible by ![SQL Alchemy ORM](#https://www.sqlalchemy.org/). The web framework utilizes ![Flask](#https://flask.palletsprojects.com/en/1.1.x) to speak with the front web interface written in ![JQuery](#https://jquery.com). Data visualizations facilitated with ![Plotly](#https://plotly.com) interactive graphing library.
+This dashboard allows for persistence layer flexibility, made completely possible by [SQL Alchemy ORM](https://www.sqlalchemy.org/). The web framework utilizes [Flask](https://flask.palletsprojects.com/en/1.1.x) to speak with the front web interface written in [JQuery](https://jquery.com). Data visualizations facilitated with [Plotly](https://plotly.com) interactive graphing library.
 
 ## Local Setup
 This dashboard can be installed locally by simply pulling this repository, and running the `app.py` script with pyton.
@@ -19,7 +19,7 @@ $ python super-hero-dash/app.py
 By default, SQLite will be the defaulted RDBMS for this application. No Data will exist in this application, but a helper script has been developed to pull Super Hero data from the _Super Hero API_.
 
 > **Note**
-> A token to access this Data is required before the data can be pulled. Please visit ![Super Hero API](#https://superheroapi.com) to register for your access token prior to running the following.
+> A token to access this Data is required before the data can be pulled. Please visit [Super Hero API](https://superheroapi.com) to register for your access token prior to running the following.
 
 ```
 $ export API_TOKEN=<INSERT SUPER HERO API TOEKN HERE>
@@ -33,7 +33,7 @@ $ echo "
   DB_USER=<INSERT DATABASE USERNAME HERE [Optional]>
   DB_PASS=<INSERT DATABASE USER PASSWORD HERE [Optional]>
   DB_HOST=<INSERT DATABASE HOST HERE [Default: localhost]>
-  DB_PORT=<INSERT DATABASE HOST PORT HERE [Default: 5432 (Postgres)]>
+  DB_PORT=<INSERT DATABASE HOST PORT HERE [Optional]>
   DB_NAME=<INSERT DATABASE NAME HERE [Default: super_hero_db]>
   DB_SCHEMA=<INSERT DATABASE SCHEMA HERE [Default: sqlite]>
   " > super-hero-dash/local.env
@@ -42,15 +42,15 @@ $ export $(cat super-hero-dash/local.env) && python super-hero-dash/app.py
 ```
 
 > **Note**
-> For more information about SQL Alchemy connection strings, please visit ![SQL Alchemy Engine configurations](#https://docs.sqlalchemy.org/en/13/core/engines.html)
+> For more information about SQL Alchemy connection strings, please visit [SQL Alchemy Engine configurations](https://docs.sqlalchemy.org/en/13/core/engines.html)
 
 ## Cloud Setup
 It is recommended to deploy this application on Heroku Free Tier service to leverage their GitHub integration and incredibly simply CI/CD application pipe.
 
 > **Note**
-> Please sign up for Heroku's free tier at ![Heroku](#https://heroku.com) before continuing. Once complete, you should have your application name, which will be referenced within as _\<heroku-app\>_.
+> Please sign up for Heroku's free tier at [Heroku](https://heroku.com) before continuing. Once complete, you should have your application name, which will be referenced within as _\<heroku-app\>_.
 
-Step number 1 - deploy a free-tier cloud managed DB like Postgres on Heroku to store the data pipe from ![Super Hero API](#https://superheroapi.com). Please follow this ![Guide](#https://devcenter.heroku.com/articles/heroku-postgresql) to spin up a small free-tier Postgres DB on Heroku.
+Step number 1 - deploy a free-tier cloud managed DB like Postgres on Heroku to store the data pipe from [Super Hero API](https://superheroapi.com). Please follow this [Guide](https://devcenter.heroku.com/articles/heroku-postgresql) to spin up a small free-tier Postgres DB on Heroku.
 
 Once succesfully completed, you should have a connection string formatted like so.
 
@@ -70,7 +70,7 @@ DB_SCHEMA=postgress (hint: postgres:// at beginning of connection string)
 This connection configuration needs to be present on the Heroku application service running Flask. Otherwise, the `data_pull.py` nor `app.py` scripts will know which DB to store and query the Super Hero data. This can be completed by running the following lines with the heroku-cli.
 
 > **Note**
-> Please visit ![Here](#https://devcenter.heroku.com/articles/heroku-cli) to learn how to install Heroku Command Line Interface on your development machine
+> Please visit [Here](https://devcenter.heroku.com/articles/heroku-cli) to learn how to install Heroku Command Line Interface on your development machine
 
 ```
 $ heroku config:set DB_USER=<username> -a <heroku-app>
@@ -89,4 +89,4 @@ $ heroku run data_pull.py -a <heroku-app>
 
 ## Footnotes
 
-The incredibly effective drop down search function kindly provided by the ![Select2 Javascript Library](#https://select2.org/). Python modules statically typed with ![PEP-484 Annotations](#https://www.python.org/dev/peps/pep-0484/), and styled according to ![Google Styling Guide for Python](#http://google.github.io/styleguide/pyguide.html). JS styled according to ![Google Styling Guide for Javascript](#https://google.github.io/styleguide/jsguide.html).
+The incredibly effective drop down search function kindly provided by the [Select2 Javascript Library](https://select2.org/). Python modules statically typed with [PEP-484 Annotations](https://www.python.org/dev/peps/pep-0484/), and styled according to [Google Styling Guide for Python](http://google.github.io/styleguide/pyguide.html). JS styled according to [Google Styling Guide for Javascript](https://google.github.io/styleguide/jsguide.html).
