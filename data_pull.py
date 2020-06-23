@@ -4,11 +4,16 @@ This script will scrape Super Hero IDs from the
 Super Hero API webpage, and then continue to
 ingest all the Super Hero data from the API. Data
 is persisted on a Heroku Postgres instance.
+
+Args:
+    API_TOKEN: Super Hero API access token
+
 """
 
+from db_model import SuperHeros, PowerStats, Biography, Aliases, Appearance
+from db_model import session, Work, Connections, Image
+from typing import Union, List, Dict
 from bs4 import BeautifulSoup
-from db_model import SuperHeros, PowerStats, Biography, Aliases, Appearance, Work, Connections, Image
-from db_model import session
 import requests
 import os
 
@@ -18,7 +23,21 @@ API_TOKEN=os.getenv('API_TOKEN', None)
 assert(not API_TOKEN is None)
 
 # Scraping
-def get_super_hero_ids():
+def get_super_hero_ids() -> List[Dict]:
+    """Pull Super Hero IDs
+
+    Scrape the Super Hero API website for IDs.
+
+    ..note:
+        No endpoint exists to pull super hero IDs
+        from API calls.
+
+    Returns:
+        List of super hero IDs & names
+    
+    Raises:
+        Exception: Error occuring normally from API connection
+    """
     try:
         headers={
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -49,14 +68,32 @@ def get_super_hero_ids():
         raise Exception('Can\'t Connect to Super Hero API ID Table')
 
 
-def write_super_hero_ids(ids):
+def write_super_hero_ids(ids: List[Dict]):
+    """Write Super Hero IDs to SQL
+
+    Args:
+        ids: List of super hero IDs and names
+    """
     super_heros = [SuperHeros(id=i['id'], name=i['name']) for i in ids]
     session.add_all(super_heros)
     session.commit()
 
 
 # API
-def _clean(sp_dict):
+def _clean(sp_dict: Union[Dict, List, str]):
+    """Clean Super Hero API JSON Responses
+
+    Recursively clean null values to the python None equivalent
+
+    Args:
+        sp_dict: Super hero JSON response
+    
+    Returns:
+        Clean response for parsing
+    
+    Raises:
+        Exception: Recursive catch for lists or values
+    """
     try:
         clean_dict = {}
         for k, v in sp_dict.items():
@@ -76,12 +113,27 @@ def _clean(sp_dict):
         
         return sp_dict
 
-def get_super_hero(id):
+def get_super_hero(id: Union[str,int]) -> Dict:
+    """Get Super Hero
+
+    Pull Super Hero from API.
+
+    Args:
+        id: Super hero ID
+    
+    Returns:
+        Super hero data dictionary
+    """
     response = requests.get('https://superheroapi.com/api/%s/%s' % (API_TOKEN, str(id)))
     sp_dict = response.json()
     return _clean(sp_dict)
 
-def write_powerstats(hero):
+def write_powerstats(hero: Dict):
+    """Write Super Hero Powerstats to SQL
+
+    Args:
+        hero: Super hero data dictionary
+    """
     powerstats = PowerStats(
         id=hero['id'],
         intelligence=hero['powerstats']['intelligence'],
@@ -93,7 +145,12 @@ def write_powerstats(hero):
     session.add(powerstats)
     session.commit()
 
-def write_biography(hero):
+def write_biography(hero: Dict):
+    """Write Super Hero Biography to SQL
+
+    Args:
+        hero: Super hero data dictionary
+    """
     biography = Biography(
         id=hero['id'],
         full_name=hero['biography']['full-name'],
@@ -105,7 +162,12 @@ def write_biography(hero):
     session.add(biography)
     session.commit()
 
-def write_aliases(hero):
+def write_aliases(hero: Dict):
+    """Write Super Hero Aliases to SQL
+
+    Args:
+        hero: Super hero data dictionary
+    """
     for i,a in enumerate(hero['biography']['aliases']):
         alias = Aliases(
             id=hero['id'],
@@ -114,7 +176,12 @@ def write_aliases(hero):
         session.add(alias)
         session.commit()
 
-def write_appearance(hero):
+def write_appearance(hero: Dict):
+    """Write Super Hero Appearnace to SQL
+
+    Args:
+        hero: Super hero data dictionary
+    """
     if len(hero['appearance']['height']) < 2:
         hero['appearance']['height'] = [None, None]
 
@@ -131,7 +198,12 @@ def write_appearance(hero):
     session.add(appearance)
     session.commit()
 
-def write_work(hero):
+def write_work(hero: Dict):
+    """Write Super Hero Work to SQL
+
+    Args:
+        hero: Super hero data dictionary
+    """
     work = Work(
         id=hero['id'],
         occupation=hero['work']['occupation'],
@@ -139,7 +211,12 @@ def write_work(hero):
     session.add(work)
     session.commit()
 
-def write_connections(hero):
+def write_connections(hero: Dict):
+    """Write Super Hero Connections to SQL
+
+    Args:
+        hero: Super hero data dictionary
+    """
     connections = Connections(
         id=hero['id'],
         group_affiliation=hero['connections']['group-affiliation'],
@@ -147,7 +224,12 @@ def write_connections(hero):
     session.add(connections)
     session.commit()
 
-def write_image(hero):
+def write_image(hero: Dict):
+    """Write Super Hero Image to SQL
+
+    Args:
+        hero: Super hero data dictionary
+    """
     image = Image(
         id=hero['id'],
         url=hero['image']['url'])
@@ -157,7 +239,13 @@ def write_image(hero):
 
 
 # Run
-def run():
+def main():
+    """Super Hero Data Ingestion
+
+    Scrape and pull all super heros from the Super Hero API
+    website and API. Store the results in the SQL database
+    with the connections created in db_model script.
+    """
     print('Pulling Super Hero IDs')
     ids = get_super_hero_ids()
     write_super_hero_ids(ids)
@@ -175,4 +263,4 @@ def run():
             write_image(hero)
 
 if __name__ == '__main__':
-    run()
+    main()

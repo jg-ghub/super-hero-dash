@@ -22,7 +22,7 @@ By default, SQLite will be the defaulted RDBMS for this application. No Data wil
 > A token to access this Data is required before the data can be pulled. Please visit ![Super Hero API](#https://superheroapi.com) to register for your access token prior to running the following.
 
 ```
-$ export API_TOKEN=_INSERT SUPER HERO API TOEKN HERE_
+$ export API_TOKEN=<INSERT SUPER HERO API TOEKN HERE>
 $ python super-hero-dash/data_pull.py
 ```
 
@@ -30,12 +30,12 @@ If you wish to store this data on a persistence layer other than SQLite, the fol
 
 ```
 $ echo "
-  DB_USER=_INSERT DATABASE USERNAME HERE [Optional]_
-  DB_PASS=_INSERT DATABASE USER PASSWORD HERE [Optional]_
-  DB_HOST=_INSERT DATABASE HOST HERE [Default: localhost]_
-  DB_PORT=_INSERT DATABASE HOST PORT HERE [Default: 5432 (Postgres)]_
-  DB_NAME=_INSERT DATABASE NAME HERE [Default: super_hero_db]_
-  DB_SCHEMA=_INSERT DATABASE SCHEMA HERE [Default: sqlite]_
+  DB_USER=<INSERT DATABASE USERNAME HERE [Optional]>
+  DB_PASS=<INSERT DATABASE USER PASSWORD HERE [Optional]>
+  DB_HOST=<INSERT DATABASE HOST HERE [Default: localhost]>
+  DB_PORT=<INSERT DATABASE HOST PORT HERE [Default: 5432 (Postgres)]>
+  DB_NAME=<INSERT DATABASE NAME HERE [Default: super_hero_db]>
+  DB_SCHEMA=<INSERT DATABASE SCHEMA HERE [Default: sqlite]>
   " > super-hero-dash/local.env
 
 $ export $(cat super-hero-dash/local.env) && python super-hero-dash/app.py
@@ -73,12 +73,12 @@ This connection configuration needs to be present on the Heroku application serv
 > Please visit ![Here](#https://devcenter.heroku.com/articles/heroku-cli) to learn how to install Heroku Command Line Interface on your development machine
 
 ```
-$ heroku config:set DB_USER=_<username>_ -a _<heroku-app>_
-$ heroku config:set DB_PASS=_<password>_ -a _<heroku-app>_
-$ heroku config:set DB_HOST=_<host>_ -a _<heroku-app>_
-$ heroku config:set DB_PORT=_<port>_ -a _<heroku-app>_
-$ heroku config:set DB_NAME=_<database>_ -a _<heroku-app>_
-$ heroku config:set DB_SCHEMA=_postgress_ -a _<heroku-app>_
+$ heroku config:set DB_USER=<username> -a <heroku-app>
+$ heroku config:set DB_PASS=<password> -a <heroku-app>
+$ heroku config:set DB_HOST=<host> -a <heroku-app>
+$ heroku config:set DB_PORT=<port> -a <heroku-app>
+$ heroku config:set DB_NAME=<database> -a <heroku-app>
+$ heroku config:set DB_SCHEMA=postgress -a <heroku-app>
 ```
 
 The front end application should now be running, and accessible from the web. Final task left is to populate the Postgres tables. This job can be run once on the local development machine, but recommended to run on Heroku cloud service now that it has been correctly configured.
@@ -89,4 +89,4 @@ $ heroku run data_pull.py -a <heroku-app>
 
 ## Footnotes
 
-The incredibly effective drop down search function kindly provided by the ![Select2 Javascript Library](#https://select2.org/)
+The incredibly effective drop down search function kindly provided by the ![Select2 Javascript Library](#https://select2.org/). Python modules statically typed with ![PEP-484 Annotations](#https://www.python.org/dev/peps/pep-0484/), and styled according to ![Google Styling Guide for Python](#http://google.github.io/styleguide/pyguide.html). JS styled according to ![Google Styling Guide for Javascript](#https://google.github.io/styleguide/jsguide.html).

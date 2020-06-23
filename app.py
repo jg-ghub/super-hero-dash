@@ -6,9 +6,13 @@ the data_pull script. Flask application pulls
 data from Postgres DB and not only provides
 a REST framework to pull data, but also renders
 the html web pages. Data visualized with Plotly.
+
+Args:
+    APP_DEBUG: Flask debug mode
+
 """
 
-from db_model import SuperHeros, PowerStats, Biography, Aliases, Appearance, Work, Connections, Image
+from db_model import SuperHeros, PowerStats, Work, Image
 from db_model import session
 import flask
 import os
@@ -22,10 +26,20 @@ app.config['DEBUG'] = APP_DEBUG
 
 @app.route('/', methods=['GET'])
 def home():
+    """Flask Application Home Page
+
+    Returns:
+        Home page HTML content
+    """
     return flask.render_template('layouts/home.html')
 
 @app.route('/api/v1/resources/heros/all', methods=['GET'])
 def api_hero_all():
+    """Flask Application All Heros API
+
+    Returns:
+        All super heros in JSON response
+    """
     rs = session.query(SuperHeros)
     heros = []
     
@@ -36,8 +50,14 @@ def api_hero_all():
 
 @app.route('/api/v1/resources/heros/powerstats', methods=['GET'])
 def api_hero():
+    """Flask Application Powerstats API
+
+    Returns:
+        Super hero powers ratings JSON response
+    """
     if 'id' in flask.request.args:
-        rs = session.query(PowerStats).filter_by(id=int(flask.request.args['id'])).first()
+        id = int(flask.request.args['id'])
+        rs = session.query(PowerStats).filter_by(id=id).first()
         
         if not rs is None:
             return flask.jsonify({
@@ -46,34 +66,46 @@ def api_hero():
                 'speed': rs.speed,
                 'durability': rs.durability,
                 'power': rs.power,
-                'combat': rs.combat
+                'combat': rs.combat,
             })
         else:
-            return 'Hero ID %d Does Not Exist' % flask.request.args['id']
+            return 'Hero ID %d Does Not Exist' % id
 
     return 'No Hero ID Parameter Found'
 
 @app.route('/api/v1/resources/heros/image', methods=['GET'])
 def api_image():
+    """Flask Application Image API
+
+    Returns:
+        Super hero image JSON response
+    """
     if 'id' in flask.request.args:
-        rs = session.query(Image).filter_by(id=flask.request.args['id']).first()
+        id = int(flask.request.args['id'])
+        rs = session.query(Image).filter_by(id=id).first()
         
         if not rs is None:
             return flask.jsonify({'url': rs.url})
         else:
-            return 'Hero ID %d Does Not Exist' % flask.request.args['id']
+            return 'Hero ID %d Does Not Exist' % id
 
     return 'No Hero ID Parameter Found'
 
 @app.route('/api/v1/resources/heros/occupation', methods=['GET'])
 def api_occupation():
+    """Flask Application Occupation API
+
+    Returns:
+        Super hero occupation JSON reponse
+    """
     if 'id' in flask.request.args:
-        rs = session.query(Work).filter_by(id=flask.request.args['id']).first()
+        id = int(flask.request.args['id'])
+        rs = session.query(Work).filter_by(id=id).first()
         
         if not rs is None:
             return flask.jsonify({'occupation': rs.occupation})
         else:
-            return 'Hero ID %d Does Not Exist' % flask.request.args['id']
+            return 'Hero ID %d Does Not Exist' % id
 
     return 'No Hero ID Parameter Found'
 

@@ -1,6 +1,15 @@
 """Super Hero API - Data Model
 
 Super Hero DB Model created with ORM SQL Alchemy.
+Default persistence to SQLite3 on local driver.
+
+Args:
+    DB_USER: SQL database username
+    DB_PASS: SQL database user password
+    DB_HOST: SQL database host connection address
+    DB_PORT: SQL database host connection port
+    DB_NAME: SQL database name
+    DB_SCHEMA: SQL Alchemy connection prefix [+driver optional]
 """
 
 from sqlalchemy.orm import sessionmaker
@@ -12,12 +21,16 @@ import os
 DB_USER=os.getenv('DB_USER', None)
 DB_PASS=os.getenv('DB_PASS', None)
 DB_HOST=os.getenv('DB_HOST', 'localhost')
-DB_PORT=os.getenv('DB_PORT', 5432)
+DB_PORT=os.getenv('DB_PORT', None)
 DB_NAME=os.getenv('DB_NAME', 'super_hero_db')
 DB_SCHEMA=os.getenv('DB_SCHEMA', 'sqlite')
 
 # Postgres Configuration
-conn_str = '%s:%d/%s' % (DB_HOST, int(DB_PORT), DB_NAME)
+if DB_PORT:
+    conn_str = '%s:%d/%s' % (DB_HOST, int(DB_PORT), DB_NAME)
+else:
+    conn_str = '%s/%s' % (DB_HOST, int(DB_PORT), DB_NAME)
+    
 if DB_USER and DB_PASS:
     conn_str = '%s:%s@%s' % (DB_USER, DB_PASS, conn_str)
 

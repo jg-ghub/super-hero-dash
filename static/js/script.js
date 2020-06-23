@@ -1,4 +1,15 @@
-const chart_layout = {
+/**
+ * @fileoverview Super Hero Dashboard Interactions
+ * 
+ * Dependencies built on select2 to enhance the drop down capabilities
+ * of dashboard (lots of super heros to choose from), and Plotly to
+ * visualize super hero powers.
+ * 
+ * @package select2
+ * @package plotly
+ */
+
+const /** @object */ chart_layout = {
     autosize: false,
     width: 480,
     height: 640,
@@ -30,6 +41,13 @@ const chart_layout = {
       }
 };
 
+/**
+ * Load once DOM ready
+ * 
+ * Setup callbacks for the search button click to
+ * load super hero image, title and chart. Also, populates
+ * the drop down before page fully loads.
+ */
 $(document).ready(() => {
     let resp = $.get('/api/v1/resources/heros/all',
         (err, req, resp) => {
